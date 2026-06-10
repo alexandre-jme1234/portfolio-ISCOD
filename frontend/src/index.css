@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Variables CSS — charte graphique Figma (ne pas modifier)
+   ============================================================ */
+:root {
+  --black:          #171c21;
+  --green-accent:   #cdfb7c;
+  --purple-accent:  #aa7cfb;
+  --purple-dark:    #8b5ae2;
+  --white-60:       rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   Reset de base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--black);
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   Blobs de fond radiaux — reproduit les "bg purple / bg green"
+   de la maquette Figma
+   ============================================================ */
+.blob-purple {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(170, 124, 251, 0.30) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.blob-green {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(205, 251, 124, 0.24) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* ============================================================
+   Typographie — classes utilitaires fidèles à la maquette
+   ============================================================ */
+
+/* Titres principaux (ex: "Compétences", "Expertises") */
+.text-heading {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 0.9;
+}
+
+/* Titres de section (ex: "INGENIERIE LOGICIEL") */
+.text-section {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: normal;
+}
+
+/* Labels légers (ex: "Overview") */
+.text-label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: normal;
+}
+
+/* Corps de texte (colonnes intro) */
+.text-body {
+  font-family: "Crimson Text", serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: normal;
+  text-align: justify;
+}
+
+/* Liens navigation */
+.text-nav {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+/* Nom d'une compétence */
+.text-skill-name {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: normal;
+  color: #ffffff;
+}
+
+/* Description d'une compétence */
+.text-skill-desc {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  color: var(--white-60);
+}
+
+/* ============================================================
+   Bordure violette des cartes (border-accent-purple maquette)
+   ============================================================ */
+.card-border {
+  border: 2px solid var(--purple-accent);
+  border-radius: 8px;
+}
+
+/* ============================================================
+   Losange vert (icône skill) — rotate 45° d'un carré
+   ============================================================ */
+.diamond {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diamond::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--green-accent);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Barre de progression (section expertises)
+   ============================================================ */
+.expertise-bar {
+  border-radius: 4px 4px 4px 0;
+}
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--purple-dark); border-radius: 3px; }
