@@ -1,4 +1,5 @@
 SET NAMES 'utf8mb4';
+INSERT IGNORE INTO pages (slug, title, type) VALUES ('apprentissage-continu', 'Apprentissage continu', 'competence');
 INSERT INTO content_blocks (page_slug, block_key, type, value, category, order_index) VALUES ('apprentissage-continu', 'header_title', 'h1', 'Apprentissage continu', 'hero', 1);
 INSERT INTO content_blocks (page_slug, block_key, type, value, category, order_index) VALUES ('apprentissage-continu', 'header_breadcrumb', 'label', 'Accueil / Compétences', 'hero', 2);
 INSERT INTO content_blocks (page_slug, block_key, type, value, category, order_index) VALUES ('apprentissage-continu', 'definition_title', 'h2', 'DÉFINITION', 'definition', 1);

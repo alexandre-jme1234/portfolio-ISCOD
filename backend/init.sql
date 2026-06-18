@@ -103,13 +103,16 @@ CREATE TABLE IF NOT EXISTS cursus_items (
 
 -- ---- Pages ---------------------------------------------------
 INSERT INTO pages (slug, title, type) VALUES
-  ('home',                  'Portfolio Alexandre JAMME', 'home'),
-  ('expertises-ingenierie', 'Ingénierie Logiciel',       'expertise'),
-  ('expertises-devops',     'DevOps',                    'expertise'),
-  ('expertises-gestion',    'Gestion de Projet',         'expertise'),
-  ('expertises-uxui',       'UX.UI Design',              'expertise'),
-  ('competences',           'Compétences',               'competence'),
-  ('projets',               'Projets',                   'projet');
+  ('home',                     'Portfolio Alexandre JAMME', 'home'),
+  ('expertises-ingenierie',    'Ingénierie Logiciel',       'expertise'),
+  ('expertises-devops',        'DevOps',                    'expertise'),
+  ('expertises-gestion',       'Gestion de Projet',         'expertise'),
+  ('expertises-uxui',          'UX.UI Design',              'expertise'),
+  ('competences',              'Compétences',               'competence'),
+  ('collaboration',            'Collaboration',             'competence'),
+  ('apprentissage-continu',    'Apprentissage continu',     'competence'),
+  ('creativite-sens-critique', 'Créativité & Sens Critique','competence'),
+  ('projets',                  'Projets',                   'projet');
 
 -- ---- Content blocks : page home -----------------------------
 

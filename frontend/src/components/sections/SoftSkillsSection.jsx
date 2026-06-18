@@ -9,34 +9,49 @@
  *   [tile 2 – App. continu]  [—vide—]  [tile 3 – Créativité]
  */
 
+import { Link } from "react-router-dom";
+import { usePages } from "../../hooks/useApi.js";
+
+// Image de fond par slug de compétence (fichiers dans public/images/)
+const COMPETENCE_IMAGES = {
+  "adaptabilite":           "/images/img_card_comp_adapatbilite.png",
+  "apprentissage-continu":  "/images/img_card_comp_apprentissage.png",
+  "creativite-sens-critique": "/images/img_card_comp_creativite.png",
+  "collaboration":          "/images/img_card_comp_collaboratif.png",
+};
+
 const DEFAULT_SOFT_SKILLS = [
   {
     id: 1,
     name: "Collaboratif",
+    slug: "collaboration",
     description:
       "Suggérer, proposer, rechercher les raisons d'un bug dans un projet impliquant plusieurs autres développeurs.",
-    image_url: null,
+    image_url: "/images/img_card_comp_collaboratif.png",
   },
   {
     id: 2,
     name: "Adaptabilité",
+    slug: "adaptabilite",
     description:
       "Prise en main de stack techniques méconnus dans le cadre d'un projet informatique.",
-    image_url: null,
+    image_url: "/images/img_card_comp_adapatbilite.png",
   },
   {
     id: 3,
     name: "Apprentissage continu",
+    slug: "apprentissage-continu",
     description:
       "Formation en continu pour s'adapter rapidement aux innovations technologiques.",
-    image_url: null,
+    image_url: "/images/img_card_comp_apprentissage.png",
   },
   {
     id: 4,
     name: "Créativité",
+    slug: "creativite-sens-critique",
     description:
       "Proposer des solutions innovantes et élégantes adaptées aux contraintes du projet.",
-    image_url: null,
+    image_url: "/images/img_card_comp_creativite.png",
   },
 ];
 
@@ -49,14 +64,21 @@ const TILE_GRID_AREAS = [
 ];
 
 export default function SoftSkillsSection({ softSkills = [], getValue }) {
-  const tiles =
-    softSkills.length >= 4 ? softSkills.slice(0, 4) : DEFAULT_SOFT_SKILLS;
+  const { pages } = usePages();
+  const competencePages = pages || [];
+  const rawTiles = competencePages.length >= 4 ? competencePages.slice(0, 4) : DEFAULT_SOFT_SKILLS;
+  // Enrichit chaque tuile avec image_url (l'API ne la retourne pas)
+  const tiles = rawTiles.map((c) => ({
+    ...c,
+    name: c.name || c.title,
+    image_url: c.image_url || COMPETENCE_IMAGES[c.slug],
+  }));
 
   return (
     <section className="relative w-full px-[80px] py-[80px] overflow-hidden">
       {/* Citation fantôme — watermark intentionnel (texte sombre sur fond sombre) */}
       <p
-        className="font-poppins font-bold text-[64px] leading-[0.9] text-white/[0.06] mb-12 tracking-[-1.28px] max-w-[1283px]"
+        className="font-poppins font-bold text-[64px] leading-[0.9] text-white mb-12 tracking-[-1.28px] max-w-[1283px]"
         aria-hidden
       >
         {getValue(
@@ -79,8 +101,8 @@ export default function SoftSkillsSection({ softSkills = [], getValue }) {
             style={{ gridArea: "1 / 1 / 2 / 2" }}
           >
             <h2
-              className="font-poppins font-bold leading-[0.9] tracking-[-1.6px]"
-              style={{ fontSize: "clamp(56px, 5.5vw, 80px)", color: "#8d4cff" }}
+              className="font-poppins font-bold leading-[0.9] tracking-[-1.6px] text-portfolio-purple"
+              style={{ fontSize: "clamp(56px, 5.5vw, 80px)" }}
             >
               Soft
               <br />
@@ -89,13 +111,23 @@ export default function SoftSkillsSection({ softSkills = [], getValue }) {
           </div>
 
           {/* 4 tuiles */}
-          {tiles.map((skill, i) => (
-            <SoftSkillTile
-              key={skill.id ?? i}
-              skill={skill}
-              gridArea={TILE_GRID_AREAS[i]}
-            />
-          ))}
+          {tiles.map((skill, i) => {
+            const slug = skill.slug || skill.name?.toLowerCase().replace(/\s+/g, "-");
+            const title = skill.title || skill.name;
+            return (
+              <Link
+                key={slug || skill.id || i}
+                to={`/competences/${slug}`}
+                className="no-underline"
+                onClick={() => console.log("Soft skill clicked:", { slug, title })}
+              >
+                <SoftSkillTile
+                  skill={skill}
+                  gridArea={TILE_GRID_AREAS[i]}
+                />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -103,6 +135,9 @@ export default function SoftSkillsSection({ softSkills = [], getValue }) {
 }
 
 function SoftSkillTile({ skill, gridArea }) {
+  const slug = skill.slug || skill.name.toLowerCase().replace(/\s+/g, "-");
+  const route = `/soft-skills/${slug}`;
+  
   return (
     <div
       className="relative overflow-hidden rounded-[8px] border-4 border-[#cdfb7c] h-[403px] cursor-pointer group"
@@ -134,13 +169,13 @@ function SoftSkillTile({ skill, gridArea }) {
       {/* Contenu */}
       <div className="absolute inset-0 flex flex-col justify-center px-[43px]">
         <p
-          className="font-poppins font-semibold leading-[0.9] tracking-[-0.8px] mb-3"
+          className="font-poppins font-semibold leading-[0.9] tracking-[-0.8px] mb-2"
           style={{ color: "#cdfb7c", fontSize: "clamp(28px, 2.8vw, 40px)" }}
         >
-          {skill.name}
+          {skill.title || skill.name}
         </p>
         <p className="font-poppins font-normal text-white text-[16px] leading-[1.04] tracking-[0.32px] max-w-[330px]">
-          {skill.description}
+          {skill.description || "Compétence soft skill liée au contenu."}
         </p>
       </div>
     </div>

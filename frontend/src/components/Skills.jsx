@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 
+// Base URL de l'API (même logique que useApi.js : VITE_API_URL en prod, proxy /api en dev)
+const API = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : "/api";
+
 const LEVEL_LABELS = ["", "Débutant", "Basique", "Intermédiaire", "Avancé", "Expert"];
 
 const CATEGORY_COLORS = {
@@ -15,7 +20,7 @@ export default function Skills() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/skills")
+    fetch(`${API}/skills`)
       .then((res) => {
         if (!res.ok) throw new Error("Erreur API");
         return res.json();
