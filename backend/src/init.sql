@@ -1,4 +1,4 @@
--- ============================================================
+﻿-- ============================================================
 -- Portfolio Alexandre JAMME — Schéma MariaDB + Seed
 -- Contenu fidèle à la maquette Figma (textes non modifiés)
 -- ============================================================
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS content_blocks (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   page_slug   VARCHAR(100)  NOT NULL,
   block_key   VARCHAR(200)  NOT NULL,  -- identifiant unique dans la page
-  type        ENUM('h1','h2','h3','label','paragraph','list_item','number','image_url') NOT NULL,
+  type        ENUM('h1','h2','h3','label','paragraph','list_item','number','image_url','callout') NOT NULL,
   value       TEXT          NOT NULL,
   category    VARCHAR(100),            -- regroupement sémantique (ex: intro_col1)
   order_index INT DEFAULT 0,

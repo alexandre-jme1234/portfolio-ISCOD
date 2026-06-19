@@ -1,4 +1,4 @@
-version: "3.9"
+﻿version: "3.9"
 
 services:
   db:
@@ -14,7 +14,7 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/src/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      DB_HOST: db
+      DB_HOST: ${DB_HOST:-db}
     ports:
       - "${BACKEND_PORT:-5000}:5000"
     depends_on:
