@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 // Base URL de l'API (proxy Vite en dev → http://backend:5000 en Docker)
 const API = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
+  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, "")}/api`
   : "/api";
 
 // Hook générique pour fetch GET
