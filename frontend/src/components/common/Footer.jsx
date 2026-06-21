@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useExpertises, useProjects } from "../../hooks/useApi.js";
+import { useExpertises, useProjects, useCompetences } from "../../hooks/useApi.js";
 
 /**
  * Footer — reproduit le frame footer (241:1328).
@@ -7,8 +7,9 @@ import { useExpertises, useProjects } from "../../hooks/useApi.js";
  * + bouton retour haut + barre de bas de page.
  */
 export default function Footer() {
-  const { expertises } = useExpertises();
-  const { projects }   = useProjects();
+  const { expertises }   = useExpertises();
+  const { projects }     = useProjects();
+  const { competences }  = useCompetences();
 
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -43,24 +44,33 @@ export default function Footer() {
           <div>
             <h3 className="font-poppins font-bold text-white text-[20px] mb-4">Projets</h3>
             <ul className="flex flex-col gap-2">
-              {projects.length > 0
-                ? projects.map((p) => (
-                    <li key={p.slug}>
-                      <Link
-                        to={`/projets/${p.slug}`}
-                        className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors"
-                      >
-                        {p.title}
-                      </Link>
-                    </li>
-                  ))
-                : (
-                  <>
-                    <li><Link to="/projets/generateur-factures" className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors">GenFact</Link></li>
-                    <li><Link to="/projets/portail-coliback"    className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors">Coliback Premium</Link></li>
-                    <li><Link to="/projets/mycitystock"          className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors">MyCityStock</Link></li>
-                  </>
-                )}
+              {projects.map((p) => (
+                <li key={p.slug}>
+                  <Link
+                    to={`/projets/${p.slug}`}
+                    className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors"
+                  >
+                    {p.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Compétences */}
+          <div>
+            <h3 className="font-poppins font-bold text-white text-[20px] mb-4">Compétences</h3>
+            <ul className="flex flex-col gap-2">
+              {competences.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    to={`/competences/${c.slug}`}
+                    className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors"
+                  >
+                    {c.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -68,24 +78,16 @@ export default function Footer() {
           <div>
             <h3 className="font-poppins font-bold text-white text-[20px] mb-4">Expertises</h3>
             <ul className="flex flex-col gap-2">
-              {expertises.length > 0
-                ? expertises.map((e) => (
-                    <li key={e.slug}>
-                      <Link
-                        to={`/expertises/${e.slug}`}
-                        className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors"
-                      >
-                        {e.title}
-                      </Link>
-                    </li>
-                  ))
-                : (
-                  <>
-                    <li><Link to="/expertises/devops"           className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors">Devops</Link></li>
-                    <li><Link to="/expertises/ux-ui-design"     className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors">Ux.ui design</Link></li>
-                    <li><Link to="/expertises/ingenierie-logiciel" className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors">Ingénierie logiciel</Link></li>
-                  </>
-                )}
+              {expertises.map((e) => (
+                <li key={e.slug}>
+                  <Link
+                    to={`/expertises/${e.slug}`}
+                    className="font-poppins font-light text-white/70 text-[16px] hover:text-white transition-colors"
+                  >
+                    {e.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
