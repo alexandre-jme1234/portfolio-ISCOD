@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 // Base URL de l'API (proxy Vite en dev → http://backend:5000 en Docker)
 const API = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, "")}/api`
+  ? `${import.meta.env.VITE_API_URL}/api`
   : "/api";
 
 // Hook générique pour fetch GET
@@ -54,6 +54,12 @@ export function useSkills() {
   return { skills: skills || {}, loading, error };
 }
 
+/** Charge la liste des compétences (pages de type 'competence'). */
+export function useCompetences() {
+  const { data, loading, error } = useFetch(`${API}/competences`);
+  return { competences: data || [], loading, error };
+}
+
 /** Charge la liste des expertises. */
 export function useExpertises() {
   const { data, loading, error } = useFetch(`${API}/expertises`);
@@ -82,4 +88,10 @@ export function useProject(slug) {
 export function useCursus() {
   const { data, loading, error } = useFetch(`${API}/cursus`);
   return { cursus: data || [], loading, error };
+}
+
+/** Charge la liste des pages de type competence depuis le backend. */
+export function usePages() {
+  const { data, loading, error } = useFetch(`${API}/competences`);
+  return { pages: data || [], loading, error };
 }

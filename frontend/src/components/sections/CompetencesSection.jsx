@@ -10,40 +10,56 @@ import ArrowLink from "../common/ArrowLink.jsx";
 
 const EXPERTISE_BLOCKS = [
   {
-    category:  "programmation",
-    slug:      "ingenierie-logiciel",
-    title:     "INGENIERIE LOGICIEL",
-    linkText:  "Consultez mes expertises Ingénierie",
-    widthClass: "w-[65%]",
-    alignClass: "",
-    twoCol:    true,
+    category:     "programmation",
+    slug:         "ingenierie-logiciel",
+    title:        "INGENIERIE LOGICIEL",
+    linkText:     "Consultez mes expertises Ingénierie",
+    widthClass:   "w-[65%]",
+    alignClass:   "",
+    twoCol:       true,
+    decorImage:   "/images/img_comp_projet_home.png",
+    decorAlt:     "Développement logiciel — écran de code en cours d'édition",
+    imageOnRight: true,
+    imageW:       625,
   },
   {
-    category:  "gestion-projet",
-    slug:      "gestion-de-projet",
-    title:     "GESTION DE PROJET",
-    linkText:  "Consultez mes expertises Gestion",
-    widthClass: "w-[62%]",
-    alignClass: "ml-auto",
-    twoCol:    true,
+    category:     "gestion-projet",
+    slug:         "gestion-de-projet",
+    title:        "GESTION DE PROJET",
+    linkText:     "Consultez mes expertises Gestion",
+    widthClass:   "w-[62%]",
+    alignClass:   "ml-auto",
+    twoCol:       true,
+    decorImage:   "/images/img_comp_gestion_projet_home.jpg",
+    decorAlt:     "Gestion de projet — suivi et organisation d'équipe",
+    imageOnRight: false,
+    imageW:       679,
   },
   {
-    category:  "infogerance",
-    slug:      "devops",
-    title:     "DEVOPS",
-    linkText:  "Consultez mes expertises DevOps",
-    widthClass: "w-[62%]",
-    alignClass: "",
-    twoCol:    true,
+    category:     "infogerance",
+    slug:         "devops",
+    title:        "DEVOPS",
+    linkText:     "Consultez mes expertises DevOps",
+    widthClass:   "w-[62%]",
+    alignClass:   "",
+    twoCol:       true,
+    decorImage:   "/images/img_comp_devops_home.png",
+    decorAlt:     "DevOps — conteneurisation Docker et pipelines CI/CD",
+    imageOnRight: true,
+    imageW:       625,
   },
   {
-    category:  "ux-design",
-    slug:      "ux-ui-design",
-    title:     "UX.UI DESIGN",
-    linkText:  "Consultez mes expertises UX/UI",
-    widthClass: "w-[62%]",
-    alignClass: "ml-auto",
-    twoCol:    true,
+    category:     "ux-design",
+    slug:         "ux-ui-design",
+    title:        "UX.UI DESIGN",
+    linkText:     "Consultez mes expertises UX/UI",
+    widthClass:   "w-[62%]",
+    alignClass:   "ml-auto",
+    twoCol:       true,
+    decorImage:   "/images/img_comp_ux-ui_home.png",
+    decorAlt:     "UX/UI design — maquette d'interface mobile",
+    imageOnRight: false,
+    imageW:       543,
   },
 ];
 
@@ -73,11 +89,16 @@ export default function CompetencesSection({ skills = {}, getValue }) {
         {/* Blocs décalés */}
         <div className="flex flex-col gap-16">
           {EXPERTISE_BLOCKS.map((cfg) => (
-            <ExpertiseBlock
+            <Link
               key={cfg.category}
-              config={cfg}
-              skills={skills[cfg.category] || []}
-            />
+              to={`/expertises/${cfg.slug}`}
+              className="group no-underline"
+            >
+              <ExpertiseBlock
+                config={cfg}
+                skills={skills[cfg.category] || []}
+              />
+            </Link>
           ))}
         </div>
       </div>
@@ -91,34 +112,63 @@ function ExpertiseBlock({ config, skills }) {
   const col2 = config.twoCol ? skills.slice(mid)   : [];
 
   return (
-    <div className={`${config.widthClass} ${config.alignClass}`}>
-      {/* Titre vert */}
-      <h3 className="text-section text-[#cdfb7c] mb-4">{config.title}</h3>
-
-      {/* Cadre compétences */}
-      <div className="card-border p-6">
-        <div className={`grid gap-4 ${col2.length > 0 ? "grid-cols-2" : "grid-cols-1"}`}>
-          <div className="flex flex-col gap-4">
-            {col1.map((skill) => (
-              <SkillItem key={skill.id} name={skill.name} description={skill.description} />
-            ))}
+    <div 
+      className={`relative ${config.widthClass} ${config.alignClass} cursor-pointer`}
+      onClick={() => console.log("Navigating to expertise:", { title: config.title, slug: config.slug })}
+    >
+        {/* Image décorative — déborde hors du bloc (clippée par overflow-hidden de la section) */}
+        {config.decorImage && (
+          <div
+            className="absolute top-0 bottom-0 pointer-events-none overflow-hidden rounded-[18px] bg-[#171c21] p-4 shadow-[0_0_0_1px_rgba(255,255,255,0.08)]"
+            style={{
+              [config.imageOnRight ? "left" : "right"]: "calc(100% + 16px)",
+              width: `${config.imageW}px`,
+              opacity: 0.9,
+            }}
+          >
+            <img
+              src={config.decorImage}
+              alt={config.decorAlt}
+              className="w-full h-full object-contain rounded-[12px] transition-opacity duration-300 group-hover:opacity-100"
+            />
           </div>
-          {col2.length > 0 && (
+        )}
+
+        {/* Titre vert */}
+        <h3 className="text-section text-[#cdfb7c] mb-4 group-hover:text-white transition-colors duration-200">{config.title}</h3>
+
+        {/* Cadre compétences */}
+        <div className="card-border p-6 group-hover:border-[#cdfb7c] transition-colors duration-200">
+          <div className={`grid gap-4 ${col2.length > 0 ? "grid-cols-2" : "grid-cols-1"}`}>
             <div className="flex flex-col gap-4">
-              {col2.map((skill) => (
-                <SkillItem key={skill.id} name={skill.name} description={skill.description} />
+              {col1.map((skill) => (
+                <SkillItem
+                  key={skill.id}
+                  name={skill.name}
+                  description={skill.description}
+                  iconKey={skill.icon_key}
+                />
               ))}
             </div>
-          )}
+            {col2.length > 0 && (
+              <div className="flex flex-col gap-4">
+                {col2.map((skill) => (
+                  <SkillItem
+                    key={skill.id}
+                    name={skill.name}
+                    description={skill.description}
+                    iconKey={skill.icon_key}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Lien flèche */}
+        <div className="mt-5">
+          <ArrowLink text={config.linkText} />
         </div>
       </div>
-
-      {/* Lien flèche */}
-      <div className="mt-5">
-        <Link to={`/expertises/${config.slug}`}>
-          <ArrowLink text={config.linkText} />
-        </Link>
-      </div>
-    </div>
-  );
-}
+    );
+  }

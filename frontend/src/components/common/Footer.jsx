@@ -13,7 +13,7 @@ export default function Footer() {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="relative bg-[#171c21] overflow-hidden">
+    <footer id="contact" className="relative bg-[#171c21] overflow-hidden">
       {/* CTA Banner */}
       <div className="border border-white/20 mx-[80px] my-12 rounded-[4px] px-10 py-6 flex items-center justify-between gap-6">
         <p className="font-poppins font-light text-white text-[18px] leading-snug max-w-[600px]">

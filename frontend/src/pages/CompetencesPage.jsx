@@ -187,6 +187,13 @@ export default function CompetencesPage() {
           </>
         )}
 
+        {/* Image bannière summary (optionnelle, block_key: summary_image) */}
+        {getValue("summary_image") && (
+          <div className="w-full rounded-[16px] overflow-hidden mb-14 max-w-[1280px]" style={{ height: "108px" }}>
+            <img src={getValue("summary_image")} alt="" className="w-full h-full object-cover" />
+          </div>
+        )}
+
         {/* Sections numérotées : preuves / évolution / autocritique */}
         <NumberedSection blocks={blocksOf(content, "preuves")}      blob="blob-green"  />
         <NumberedSection blocks={blocksOf(content, "evolution")}    blob="blob-purple" />

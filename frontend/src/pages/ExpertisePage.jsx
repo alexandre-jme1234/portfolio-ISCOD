@@ -25,8 +25,10 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useExpertise, useSkills, useProjects, usePageContent } from "../hooks/useApi.js";
-import Spinner   from "../components/common/Spinner.jsx";
-import SkillItem from "../components/common/SkillItem.jsx";
+import Spinner          from "../components/common/Spinner.jsx";
+import SkillItem        from "../components/common/SkillItem.jsx";
+import MethodologyFrise from "../components/expertise/MethodologyFrise.jsx";
+import ProjectsSection  from "../components/sections/ProjectsSection.jsx";
 
 // ---------------------------------------------------------------------------
 // Constante : liaison slug expertise → catégorie de skills BDD
@@ -36,6 +38,19 @@ const SLUG_TO_CATEGORY = {
   "devops":              "infogerance",
   "gestion-de-projet":   "gestion-projet",
   "ux-ui-design":        "ux-design",
+};
+
+// Image décorative au-dessus de la frise (par slug)
+const SLUG_TO_DECORATION = {
+  "devops": "/images/methodology-devops-decoration.png",
+};
+
+// Abréviations pour le 4ème élément du pipeline Méthodologie
+const SLUG_TO_ABBREV = {
+  "devops":              "DEV",
+  "ingenierie-logiciel": "LOG",
+  "gestion-de-projet":   "GES",
+  "ux-ui-design":        "UX",
 };
 
 // Étapes de méthodologie par défaut quand aucun content_block n'existe
@@ -79,7 +94,7 @@ function MethodologyStep({ number, label }) {
       </div>
       <p
         className="font-poppins font-light text-white text-center"
-        style={{ fontSize: "20px" }}
+        style={{ fontSize: "30px" }}
       >
         {label}
       </p>
@@ -101,23 +116,25 @@ function MethodologyStep({ number, label }) {
  */
 function NumberedSection({ number, title, children }) {
   return (
-    <section className="relative" style={{ paddingTop: "60px" }}>
-      {/* Grand chiffre décoratif — Poppins SemiBold 128px */}
-      <p
-        className="absolute top-0 left-0 font-poppins font-semibold text-white leading-none select-none pointer-events-none"
-        style={{ fontSize: "128px" }}
-        aria-hidden
-      >
-        {number}
-      </p>
+    <section className="relative" style={{ paddingTop: "24px" }}>
+      <div className="flex items-center gap-[24px]">
+        {/* Grand chiffre décoratif — Poppins SemiBold 128px */}
+        <p
+          className="font-poppins font-semibold text-white leading-none select-none"
+          style={{ fontSize: "128px" }}
+          aria-hidden
+        >
+          {number}
+        </p>
 
-      {/* Titre décalé à droite du chiffre — Poppins Bold 80px */}
-      <h2
-        className="relative font-poppins font-bold text-white leading-normal"
-        style={{ fontSize: "80px", paddingLeft: "92px", paddingTop: "8px" }}
-      >
-        {title}
-      </h2>
+        {/* Titre aligné à la même ligne que le chiffre — Poppins Bold 80px */}
+        <h2
+          className="font-poppins font-bold text-white leading-none"
+          style={{ fontSize: "80px" }}
+        >
+          {title}
+        </h2>
+      </div>
 
       {/* Corps de la section */}
       <div className="mt-[60px]">
@@ -158,71 +175,36 @@ function SubSection({ label, text }) {
 }
 
 // ---------------------------------------------------------------------------
-// Sous-composant : Carte projet
+// Sous-composant : 4ème élément du pipeline Méthodologie (abréviation du slug)
 // ---------------------------------------------------------------------------
 
-/**
- * ProjectCard — carte projet dans la grille "projets liés".
- * Image + titre Poppins Regular 24px + tags sur fond #eae9ff.
- *
- * @param {Object}   props
- * @param {string}   props.slug       - slug du projet (routing)
- * @param {string}   props.title      - titre du projet
- * @param {string}   [props.imageUrl] - URL de l'image de couverture
- * @param {string[]} [props.tags]     - tableau de tags textuels
- */
-function ProjectCard({ slug, title, imageUrl, tags = [] }) {
+function FourthElement({ abbrev }) {
   return (
-    <Link
-      to={`/projets/${slug}`}
-      className="flex flex-col gap-[17px] flex-shrink-0 group"
-      style={{ width: "413px" }}
-      aria-label={`Voir le projet ${title}`}
-    >
-      {/* Vignette image — fond blanc + bordure verte 10px (Figma node 377:2377) */}
+    <div className="flex items-center flex-shrink-0" style={{ marginLeft: "-60px" }}>
+      {/* Ligne de connexion plate vers le bloc */}
       <div
-        className="rounded-[8px] overflow-hidden flex-shrink-0 relative"
-        style={{ height: "414px", border: "10px solid #cdfb7c", backgroundColor: "#ffffff" }}
+        className="flex-shrink-0 bg-[#cdfb7c]"
+        style={{ width: "74px", height: "1.5px" }}
+        aria-hidden
+      />
+      {/* Hexagone avec texte rotaté -90° */}
+      <div
+        className="bg-[#cdfb7c] flex items-center justify-center flex-shrink-0"
+        style={{
+          width: "160px",
+          height: "160px",
+          clipPath: "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
+        }}
+        aria-hidden
       >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full bg-[#2c2f32] flex items-center justify-center">
-            <span className="font-poppins text-white/30" style={{ fontSize: "14px" }}>
-              {title}
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Titre + tags */}
-      <div className="flex flex-col gap-[10px]">
-        <p
-          className="font-poppins font-normal text-white leading-normal group-hover:text-[#cdfb7c] transition-colors"
-          style={{ fontSize: "24px" }}
+        <span
+          className="font-poppins font-black text-[#171c21] leading-none select-none"
+          style={{ fontSize: "64px", transform: "rotate(-90deg)" }}
         >
-          {title}
-        </p>
-        {tags.length > 0 && (
-          <div className="flex gap-[12px] flex-wrap">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="font-poppins font-semibold text-[#171c21] bg-[#eae9ff] px-[20px] py-[2px] rounded-[16px]"
-                style={{ fontSize: "14px" }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+          {abbrev}
+        </span>
       </div>
-    </Link>
+    </div>
   );
 }
 
@@ -346,32 +328,26 @@ export default function ExpertisePage() {
             ------------------------------------------------------------------ */}
         <section className="px-[80px] pt-[80px] pb-[80px]">
 
-          {/* Lignes décoratives ondulées (Subtract Figma) */}
+          {/* Vague décorative gauche (Figma node 321:2140, left=-143px) */}
           <div
             className="absolute pointer-events-none overflow-hidden"
-            style={{ top: "560px", left: "0", width: "1027px", height: "148px", opacity: 0.45 }}
+            style={{ top: "666px", left: "-143px", width: "1027px", height: "148px", opacity: 0.45 }}
             aria-hidden
           >
-            <svg
-              viewBox="0 0 1027 148"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-full"
-            >
-              <path
-                d="M0 74 Q128 0 257 74 Q385 148 514 74 Q642 0 770 74 Q899 148 1027 74"
-                stroke="#cdfb7c"
-                strokeWidth="2"
-                fill="none"
-                opacity="0.5"
-              />
-              <path
-                d="M0 100 Q128 26 257 100 Q385 174 514 100 Q642 26 770 100 Q899 174 1027 100"
-                stroke="#aa7cfb"
-                strokeWidth="1.5"
-                fill="none"
-                opacity="0.35"
-              />
+            <svg viewBox="0 0 1027 148" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <path d="M0 74 Q128 0 257 74 Q385 148 514 74 Q642 0 770 74 Q899 148 1027 74" stroke="#cdfb7c" strokeWidth="2" fill="none" opacity="0.5" />
+              <path d="M0 100 Q128 26 257 100 Q385 174 514 100 Q642 26 770 100 Q899 174 1027 100" stroke="#aa7cfb" strokeWidth="1.5" fill="none" opacity="0.35" />
+            </svg>
+          </div>
+          {/* Vague décorative droite (Figma node 321:2143, left=calc(16.67%+172px)) */}
+          <div
+            className="absolute pointer-events-none overflow-hidden"
+            style={{ top: "666px", left: "calc(16.67% + 172px)", width: "1027px", height: "148px", opacity: 0.45 }}
+            aria-hidden
+          >
+            <svg viewBox="0 0 1027 148" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+              <path d="M0 74 Q128 0 257 74 Q385 148 514 74 Q642 0 770 74 Q899 148 1027 74" stroke="#cdfb7c" strokeWidth="2" fill="none" opacity="0.5" />
+              <path d="M0 100 Q128 26 257 100 Q385 174 514 100 Q642 26 770 100 Q899 174 1027 100" stroke="#aa7cfb" strokeWidth="1.5" fill="none" opacity="0.35" />
             </svg>
           </div>
 
@@ -412,68 +388,11 @@ export default function ExpertisePage() {
             Méthodologie
           </h2>
 
-          <div className="flex items-center gap-0">
-            {/* Label vertical gauche — slug en majuscules, rotation -90° */}
-            <div
-              className="flex-shrink-0 flex items-center justify-center"
-              style={{ width: "58px", height: "212px" }}
-              aria-hidden
-            >
-              <span
-                className="font-poppins font-black text-[#cdfb7c] leading-[0.9] whitespace-nowrap select-none block"
-                style={{
-                  fontSize: "36px",
-                  transform: "rotate(-90deg)",
-                  transformOrigin: "center",
-                  display: "block",
-                  width: "212px",
-                  textAlign: "center",
-                  marginLeft: "-77px",
-                }}
-              >
-                {slug.toUpperCase().replace(/-/g, " ")}
-              </span>
-            </div>
-
-            {/* Pipeline — 4 hexagones liés par des flèches */}
-            <div className="flex items-center flex-1 min-w-0">
-              {methodologySteps.map((label, i) => (
-                <div key={label} className="flex items-center flex-1 min-w-0">
-                  <MethodologyStep number={String(i + 1)} label={label} />
-                  {i < methodologySteps.length - 1 && (
-                    <div className="flex-1 flex items-center justify-center min-w-[20px]" aria-hidden>
-                      <svg width="60" height="12" viewBox="0 0 60 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0" y1="6" x2="50" y2="6" stroke="#cdfb7c" strokeWidth="1.5" />
-                        <polyline points="44,1 56,6 44,11" fill="none" stroke="#cdfb7c" strokeWidth="1.5" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Label vertical droit "START" */}
-            <div
-              className="flex-shrink-0 flex items-center justify-center"
-              style={{ width: "58px", height: "212px" }}
-              aria-hidden
-            >
-              <span
-                className="font-poppins font-black text-[#cdfb7c] leading-[0.9] whitespace-nowrap select-none"
-                style={{
-                  fontSize: "36px",
-                  transform: "rotate(-90deg)",
-                  transformOrigin: "center",
-                  display: "block",
-                  width: "212px",
-                  textAlign: "center",
-                  marginRight: "-77px",
-                }}
-              >
-                START
-              </span>
-            </div>
-          </div>
+          <MethodologyFrise
+            steps={methodologySteps}
+            abbrev={SLUG_TO_ABBREV[slug] || slug.slice(0, 3).toUpperCase()}
+            imageUrl={SLUG_TO_DECORATION[slug] || null}
+          />
 
           {/* Compétences associées — affiché uniquement si données BDD disponibles */}
           {relatedSkills.length > 0 && (
@@ -486,7 +405,12 @@ export default function ExpertisePage() {
               </h3>
               <div className="grid grid-cols-2 gap-x-[60px] gap-y-[24px]">
                 {relatedSkills.map((skill) => (
-                  <SkillItem key={skill.id} name={skill.name} description={skill.description} />
+                  <SkillItem
+                    key={skill.id}
+                    name={skill.name}
+                    description={skill.description}
+                    iconKey={skill.icon_key}
+                  />
                 ))}
               </div>
             </div>
@@ -554,45 +478,10 @@ export default function ExpertisePage() {
 
         {/* ====================================================================
             SECTION PROJETS
-            Titre "projets" flanqué de lignes horizontales + grille de cards
-            (reproduit le node "Project Heading" + "Content Container" Figma)
+            Rendu via ProjectsSection pour réutiliser le composant existant
             ==================================================================== */}
         {relatedProjects.length > 0 && (
-          <section className="px-[80px] pb-[120px]">
-
-            {/* Titre flanqué de lignes — reproduit node 321:2335 */}
-            <div className="flex items-center gap-[31px] mb-[60px]">
-              <div
-                className="h-px bg-white flex-shrink-0"
-                style={{ width: "168px" }}
-                aria-hidden
-              />
-              <h2
-                className="font-poppins font-bold text-white leading-[0.9] flex-shrink-0 whitespace-nowrap"
-                style={{ fontSize: "80px" }}
-              >
-                projets
-              </h2>
-              <div
-                className="h-px bg-white flex-shrink-0"
-                style={{ width: "168px" }}
-                aria-hidden
-              />
-            </div>
-
-            {/* Grille de cards — 3 colonnes, gap 28px (reproduit node 2052:2862) */}
-            <div className="flex flex-wrap gap-[28px]">
-              {relatedProjects.map((project) => (
-                <ProjectCard
-                  key={project.slug}
-                  slug={project.slug}
-                  title={project.title}
-                  imageUrl={project.image_url}
-                  tags={project.tags ?? []}
-                />
-              ))}
-            </div>
-          </section>
+          <ProjectsSection projects={relatedProjects} fullWidth={false} />
         )}
 
       </div>{/* fin max-w-[1440px] */}

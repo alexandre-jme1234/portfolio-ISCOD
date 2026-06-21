@@ -65,7 +65,7 @@ export default function HomePage() {
       />
 
       {/* 8. Projets — grille de cartes */}
-      <ProjectsSection projects={projects} />
+      <ProjectsSection projects={projects} fullWidth={true} />
     </main>
   );
 }
