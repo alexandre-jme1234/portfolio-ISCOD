@@ -44,6 +44,10 @@ services:
       dockerfile: Dockerfile
     container_name: portfolio_frontend
     restart: unless-stopped
+    environment:
+      # En Docker, Vite proxie /api vers le container backend (DNS interne Docker)
+      # En local sans Docker, vite.config.js fallback vers http://localhost:5000
+      API_PROXY: http://backend:5000
     ports:
       - "3000:3000"
     depends_on:

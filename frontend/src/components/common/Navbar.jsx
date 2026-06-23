@@ -185,8 +185,8 @@ export default function Navbar() {
 
           {/* Contact — CTA pill */}
           <li className="flex-shrink-0 ml-2">
-            <a
-              href="/#contact"
+            <Link
+              to="/contact"
               className="inline-flex items-center font-poppins font-semibold text-[12px] tracking-wide
                          text-portfolio-green border border-portfolio-green/70
                          px-5 py-2 rounded-full
@@ -194,7 +194,7 @@ export default function Navbar() {
                          transition-all duration-200 whitespace-nowrap"
             >
               Contact
-            </a>
+            </Link>
           </li>
 
         </ul>

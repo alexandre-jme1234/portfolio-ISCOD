@@ -9,7 +9,9 @@ export default defineConfig({
     watch: { usePolling: true },
     proxy: {
       "/api": {
-        target: "http://backend:5000",
+        // En Docker : API_PROXY=http://backend:5000 (docker-compose.yml)
+        // En local  : fallback http://localhost:5000
+        target: process.env.API_PROXY || "http://localhost:5000",
         changeOrigin: true,
       },
     },

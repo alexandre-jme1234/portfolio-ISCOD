@@ -97,6 +97,18 @@ CREATE TABLE IF NOT EXISTS cursus_items (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+
+-- ---- CONTACTS -----------------------------------------------
+-- Messages reçus via le formulaire de contact
+CREATE TABLE IF NOT EXISTS contacts (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  nom         VARCHAR(200)  NOT NULL,
+  email       VARCHAR(200)  NOT NULL,
+  telephone   VARCHAR(50),
+  objet       VARCHAR(200),
+  message     TEXT,
+  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- ==============================================================
 -- SEED — Données fidèles à la maquette Figma
 -- ==============================================================

@@ -5,6 +5,7 @@ import HomePage        from "./pages/HomePage.jsx";
 import ExpertisePage   from "./pages/ExpertisePage.jsx";
 import CompetencesPage from "./pages/CompetencesPage.jsx";
 import ProjetPage      from "./pages/ProjetPage.jsx";
+import ContactPage     from "./pages/ContactPage.jsx";
 import { useHashScroll } from "./hooks/useHashScroll.js";
 
 /**
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/expertises/:slug"      element={<ExpertisePage />}   />
           <Route path="/competences/:slug"     element={<CompetencesPage />} />
           <Route path="/projets/:slug"         element={<ProjetPage />}      />
+          <Route path="/contact"               element={<ContactPage />}     />
           <Route
             path="*"
             element={
