@@ -9,6 +9,7 @@ import projectsRouter  from "./routes/projects.js";
 import cursusRouter      from "./routes/cursus.js";
 import competencesRouter from "./routes/competences.js";
 import contactRouter     from "./routes/contact.js";
+import establishmentsRouter from "./routes/establishments.js";
 
 const app  = express();
 const PORT = process.env.BACKEND_PORT || 5000;
@@ -24,6 +25,7 @@ app.use("/api/projects",   projectsRouter);
 app.use("/api/cursus",       cursusRouter);
 app.use("/api/competences",  competencesRouter);
 app.use("/api/contact",      contactRouter);
+app.use("/api/establishments", establishmentsRouter);
 
 // Health check
 app.get("/health", (_req, res) => res.json({ status: "ok" }));

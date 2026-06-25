@@ -54,6 +54,9 @@ services:
       - backend
     volumes:
       - ./frontend/src:/app/src
+      # Monte le dossier public en live pour servir les images ajoutées
+      # (logos de la frise parcours, etc.) sans rebuild de l'image Docker.
+      - ./frontend/public:/app/public
 
 volumes:
   db_data:

@@ -47,17 +47,6 @@ function DropdownItem({ to, label }) {
   );
 }
 
-function NavLink({ to, active, children }) {
-  return (
-    <Link
-      to={to}
-      className={`relative font-poppins font-medium text-[13px] tracking-wide whitespace-nowrap py-1 transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:rounded-full after:transition-transform after:duration-200 after:origin-left ${active ? "text-portfolio-green after:bg-portfolio-green after:scale-x-100" : "text-white/70 hover:text-white after:bg-portfolio-green after:scale-x-0 hover:after:scale-x-100"}`}
-    >
-      {children}
-    </Link>
-  );
-}
-
 function DropdownTrigger({ active, open, children, onClick }) {
   return (
     <button
@@ -118,9 +107,24 @@ export default function Navbar() {
             clippe les enfants position:absolute (les dropdowns). 5 items → pas besoin de scroll. */}
         <ul className="flex items-center gap-5 lg:gap-8 flex-1 justify-end list-none">
 
-          {/* Accueil */}
-          <li className="flex-shrink-0">
-            <NavLink to="/" active={pathname === "/"}>Accueil</NavLink>
+          {/* Accueil — transformé en sous-menu : accès à l'accueil et à la frise Parcours */}
+          <li className="relative flex-shrink-0">
+            <DropdownTrigger
+              active={pathname === "/" || pathname === "/parcours"}
+              open={openMenu === "accueil"}
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleMenu("accueil");
+              }}
+            >
+              Accueil
+              <ChevronIcon open={openMenu === "accueil"} />
+            </DropdownTrigger>
+            <DropdownMenu open={openMenu === "accueil"}>
+              <DropdownItem to="/" label="Accueil" />
+              <DropdownItem to="/parcours" label="Parcours" />
+              <DropdownItem to="/presentation" label="Présentation" />
+            </DropdownMenu>
           </li>
 
           {/* Compétences */}

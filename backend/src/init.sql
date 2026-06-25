@@ -292,3 +292,31 @@ INSERT INTO projects (slug, title, subtitle, description, category, order_index)
    'Générateur de Factures', 'Logiciel interne',
    'Développement d\'un logiciel de génération de factures dans l\'écosystème Coliback.',
    'développement logiciel', 4);
+
+-- ---- ESTABLISHMENTS ---------------------------------------
+-- Pages de présentation d'un établissement / d'une entreprise
+-- (détail des blocs de la frise /parcours). Le logo n'est PAS stocké
+-- ici : il est servi statiquement par le frontend (/images/parcours/:slug.png).
+-- Le seed est géré par backend/src/migrate_establishments.js.
+CREATE TABLE IF NOT EXISTS establishments (
+  id                 INT AUTO_INCREMENT PRIMARY KEY,
+  slug               VARCHAR(100)  NOT NULL UNIQUE,
+  name               VARCHAR(200)  NOT NULL,
+  subtitle           VARCHAR(255),
+  presentation_left  TEXT,
+  presentation_right TEXT,
+  created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---- ESTABLISHMENT_VISIONS --------------------------------
+-- Tableau des arguments "vision pédagogique" d'un établissement (relation 1-N)
+CREATE TABLE IF NOT EXISTS establishment_visions (
+  id               INT AUTO_INCREMENT PRIMARY KEY,
+  establishment_id INT NOT NULL,
+  title            VARCHAR(200) NOT NULL,
+  description      TEXT,
+  position         INT DEFAULT 0,
+  created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (establishment_id) REFERENCES establishments(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

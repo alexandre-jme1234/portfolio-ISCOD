@@ -21,6 +21,25 @@ function blocksOf(content, category) {
     .sort((a, b) => a.order_index - b.order_index);
 }
 
+const COMP_LABELS = {
+  "apprentissage-continu":    "Apprentissage Continu",
+  "autonomie":                "Autonomie",
+  "resolution-problemes":     "Résolution de Problèmes",
+  "collaboration":            "Collaboration",
+  "adaptabilite":             "Adaptabilité",
+  "creativite-sens-critique": "Créativité & Sens Critique",
+};
+
+const EXP_LABELS = {
+  "ingenierie-logiciel": "Ingénierie Logiciel",
+  "devops":              "Devops",
+  "gestion-de-projet":   "Gestion de Projet",
+  "ux-ui-design":        "UX.UI Design",
+};
+
+const compLabel = (slug) => COMP_LABELS[slug] ?? slug;
+const expLabel  = (slug) => EXP_LABELS[slug]  ?? slug;
+
 // Renders a sequence of blocks (h2, h3, paragraph, list_item) in order.
 // Consecutive list_items are grouped into a single <ul>.
 function ProjetSection({ blocks }) {
@@ -115,9 +134,37 @@ export default function ProjetPage() {
             <p className="text-label text-white/80 mb-4">{getValue("header_breadcrumb")}</p>
           )}
           {project.category && (
-            <span className="bg-[#aa7cfb] text-white font-poppins font-semibold text-[14px] px-6 py-[2px] rounded-[16px]">
+            <span className="inline-flex items-center gap-1 border border-white/30 text-white/60 font-poppins text-[12px] uppercase tracking-widest px-3 py-[2px] rounded-[4px] mt-2">
               {project.category}
             </span>
+          )}
+
+          {project.tags_competences?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {project.tags_competences.map((tag) => (
+                <Link
+                  key={tag}
+                  to={`/competences/${tag}`}
+                  className="bg-[#aa7cfb]/50 text-white font-poppins font-semibold text-[13px] px-4 py-[3px] rounded-[16px] hover:bg-[#aa7cfb] transition-colors"
+                >
+                  {compLabel(tag)}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {project.tags_expertises?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {project.tags_expertises.map((tag) => (
+                <Link
+                  key={tag}
+                  to={`/expertises/${tag}`}
+                  className="bg-[#cdfb7c] text-[#171c21] font-poppins font-semibold text-[13px] px-4 py-[3px] rounded-[16px] hover:opacity-80 transition-opacity"
+                >
+                  {expLabel(tag)}
+                </Link>
+              ))}
+            </div>
           )}
         </header>
 

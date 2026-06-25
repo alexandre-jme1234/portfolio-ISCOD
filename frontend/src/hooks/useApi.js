@@ -95,3 +95,9 @@ export function usePages() {
   const { data, loading, error } = useFetch(`${API}/competences`);
   return { pages: data || [], loading, error };
 }
+
+/** Charge un établissement (présentation + visions pédagogiques) par son slug. */
+export function useEstablishment(slug) {
+  const { data, loading, error } = useFetch(slug ? `${API}/establishments/${slug}` : null);
+  return { establishment: data, loading, error };
+}
